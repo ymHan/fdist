@@ -1,0 +1,833 @@
+syntax = "proto3";
+
+package backoffice;
+
+import "google/protobuf/empty.proto";
+//import "google/protobuf/timestamp.proto";
+
+/********************************************************************************
+공통 메시지
+*********************************************************************************/
+// 페이징 정보
+message Paging {
+  int32 page    = 1;
+  int32 size    = 2;
+  int32 total   = 3;
+  string sort   = 5;
+  string order  = 6;
+}
+
+// 기본 결과 메시지
+message defaultResult {
+  string status = 1;
+  string message = 2;
+}
+/********************************************************************************
+ 공통 메시지
+*********************************************************************************/
+/********************************************************************************
+ 비디오 관련 시작
+*********************************************************************************/
+service VideoService {
+  rpc CreateVideo(CreateVideoRequest) returns (CreateVideoResponse) {} // 비디오 정보 입력
+//  rpc GetVideo(GetVideoRequest) returns (GetVideoResponse) {} // 비디오 정보 입력
+//  rpc ListVideo(ListVideoRequest) returns (ListVideoResponse) {} // 비디오 정보 입력
+//  rpc UpdateVideo(UpdateVideoRequest) returns (UpdateVideoResponse) {} // 비디오 정보 입력
+//  rpc DeleteVideo(DeleteVideoRequest) returns (DeleteVideoResponse) {} // 비디오 정보 입력
+  //임시...
+  rpc V1CreateVideo(V1CreateVideoRequest) returns (V1CreateVideoResponse) {} // 비디오 정보 입력
+  rpc V1GetVideo(V1GetVideoRequest) returns (V1GetVideoResponse) {} // 비디오 정보 입력
+  rpc V1ListVideo(V1ListVideoRequest) returns (V1ListVideoResponse) {} // 비디오 정보 입력
+  rpc V1DeleteVideo(V1DeleteVideoRequest) returns (V1DeleteVideoResponse) {} // 비디오 정보 입력
+}
+
+message V1DeleteVideoRequest {
+  int32 id = 1;
+}
+
+message V1DeleteVideoResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+}
+
+message V1ListVideoRequest {
+  int32 page = 1;
+  int32 limit = 2;
+  string sort = 3;
+  string order = 4;
+}
+
+message V1ListVideoResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+  message Paging {
+    int32 page = 1;
+    int32 limit = 2;
+    int32 totalCount = 3;
+    int32 totalPage = 4;
+    string sort = 5;
+    string order = 6;
+  }
+  Paging meta = 4;
+  repeated v1Result data = 5;
+}
+
+message V1GetVideoResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+  message DATA {
+    int32 id = 1;
+    string email = 2;
+    string title = 3;
+    string subTitle = 4;
+    string description = 5;
+    string ownerName = 6;
+    string ownerNickName = 7;
+    string ownerChannelName = 8;
+    string ownerProfileIconUrl = 9;
+    string thumbnailUrl = 10;
+    int32 viewCount = 11;
+    int32 reportCount = 12;
+    int32 likesCount = 13;
+    string duration = 14;
+    string category = 15;
+    string categorySub = 16;
+    string categorySubCode = 17;
+    string recordType = 18;
+    repeated string contentUrlList = 19;
+    repeated string poseIndicatorList = 20;
+    string nodeId = 21;
+    string createdAt = 22;
+  }
+  DATA data = 4;
+}
+
+message V1GetVideoRequest {
+  int32 id = 1;
+}
+
+message v1Result {
+  int32 id = 1;
+  string email = 2;
+  string title = 3;
+  string subTitle = 4;
+  string description = 5;
+  string ownerName = 6;
+  string ownerNickName = 7;
+  string ownerChannelName = 8;
+  string ownerProfileIconUrl = 9;
+  string thumbnailUrl = 10;
+  int32 viewCount = 11;
+  int32 reportCount = 12;
+  int32 likesCount = 13;
+  string duration = 14;
+  string category = 15;
+  string categorySub = 16;
+  string categorySubCode = 17;
+  string recordType = 18;
+  repeated string contentUrlList = 19;
+  repeated string poseIndicatorList = 20;
+  string nodeId = 21;
+  string createdAt = 22;
+}
+
+message V1CreateVideoResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+  message Data {
+    int32 id = 1;
+    string email = 2;
+    string title = 3;
+    string subTitle = 4;
+    string description = 5;
+    string ownerName = 6;
+    string ownerNickName = 7;
+    string ownerChannelName = 8;
+    string ownerProfileIconUrl = 9;
+    string thumbnailUrl = 10;
+    int32 viewCount = 11;
+    int32 reportCount = 12;
+    int32 likesCount = 13;
+    string duration = 14;
+    string category = 15;
+    string categorySub = 16;
+    string categorySubCode = 17;
+    string recordType = 18;
+    repeated string contentUrlList = 19;
+    repeated string poseIndicatorList = 20;
+    string nodeId = 21;
+    string createdAt = 22;
+  }
+  Data data = 4;
+}
+
+message V1CreateVideoRequest {
+  string email = 1;
+  string title = 2;
+  string subTitle = 3;
+  string description = 4;
+  string ownerName = 5;
+  string ownerNickName = 6;
+  string ownerChannelName = 7;
+  string ownerProfileIconUrl = 8;
+  string thumbnailUrl = 9;
+  string duration = 10;
+  string category = 11;
+  string categorySub = 12;
+  string categorySubCode = 13;
+  string recordType = 14;
+  repeated string contentUrlList = 15;
+  repeated string poseIndicatorList = 16;
+  string nodeId = 17;
+}
+
+message DefaultResult {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+  message DATA {
+    bool result = 1;
+  }
+  repeated DATA data = 4;
+}
+
+message CreateVideoRequest {
+  string title = 1;
+  string subTitle = 2;
+  string description = 3;
+  string record_type = 4;
+  repeated string fileList = 5;
+  repeated string indicatorList = 6;
+  string nodeId = 7;
+  string thumbnail = 8;
+  string categoryId = 9;
+  string subCategoryId = 10;
+  string userId = 11;
+}
+
+message CreateVideoResponse {
+  DefaultResult result = 1;
+}
+/********************************************************************************
+ 비디오 관련 끝
+*********************************************************************************/
+/********************************************************************************
+  거래처 관련 시작
+ ********************************************************************************/
+service BO_Customer_Service {
+  rpc CreateCustomer(CreateCustomerRequest) returns (CreateCustomerResponse) {} // 거래처 정보 입력
+  rpc UpdateCustomer(UpdateCustomerRequest) returns (UpdateCustomerResponse) {} // 거래처 정보 수정
+  rpc DeleteCustomer(DeleteCustomerRequest) returns (DeleteCustomerResponse) {} // 거래처 정보 삭제
+  rpc GetCustomer(GetCustomerRequest) returns (GetCustomerResponse) {} // 거래처 정보 조회
+  rpc ListCustomer(ListCustomerRequest) returns (ListCustomerResponse) {} //거래처 정보 목록 조회
+
+  rpc MakeQRCode(MakeQRCodeRequest) returns (MakeQRCodeResponse) {} // QR코드 생성
+}
+
+message MakeQRCodeResponse {
+  int32 status = 1;
+  message Result {
+    string url = 1;
+  }
+  Result result = 2;
+  repeated string error = 3;
+}
+
+message MakeQRCodeRequest {
+  string nodeId = 1; // 거래처코드번호
+}
+
+message DeleteCustomerRequest {
+  string id = 1; // 거래처코드번호
+}
+
+message DeleteCustomerResponse {
+  int32 status = 1;
+  repeated string error = 2;
+}
+//거래처 테이블
+message Customer {
+  string  id          = 1; // 거래처코드번호
+  string  name        = 2; // 거래처명
+  string  description = 3; // 거래처설명
+  string  createdAt   = 4; // 생성일
+  string  updatedAt   = 5; // 수정일
+}
+
+// 1. 거래처 등록
+message CreateCustomerRequest {
+  string name        = 1; // 거래처명
+  string description = 2; // 거래처설명
+}
+
+// 1-1. 거래처 등록 결과
+message CreateCustomerResponse {
+  int32 status          = 1;
+  message Result {
+    string id = 1;
+  }
+  repeated string error = 2;
+  Result result         = 3;
+}
+
+// 2. 거래처 정보 가져오기 요청
+message GetCustomerRequest {
+  string id = 1; // 거래처코드번호
+}
+
+// 2-1. 거래처 정보 가져오기 결과
+message GetCustomerResponse {
+  int32 status          = 1;
+  message Result {
+    Customer customer   = 1;
+  }
+  Result result         = 2;
+  repeated string error = 3;
+
+}
+
+// 3. 거래처 목록 가져오기 요청
+message ListCustomerRequest {
+  int32   page          = 1; // 페이지 번호
+  int32   pagesize      = 2; // 페이지 사이즈
+  string  sort          = 3; // 정렬 - field 명
+  string  order         = 4; // 정렬 방식 asc / desc
+  //string  searchMethod  = 5; // 검색조건
+  //string  searchString  = 6; // 검색어
+}
+
+// 3-1. 거래처 목록 가져오기 결과
+message ListCustomerResponse {
+  int32 status                = 1; // 상태 정보
+  int32 totalCount            = 2; // 전체 Customer 수
+  int32 page                  = 3; // 페이지 번호
+  int32 lastPage              = 4; // 마지막 페이지 번호
+  message Result {
+    repeated Customer customers = 1; // Customer 목록
+  }
+  Result result               = 5; // 결과 정보
+  repeated string error       = 6; // 에러 정보
+}
+
+// 4. 거래처 정보 수정 요청
+message UpdateCustomerRequest {
+  string  id    = 1; // 거래처코드번호
+  string  name          = 2; // 거래처명
+  string  description   = 3; // 거래처설명
+}
+
+// 4-1. 거래처 정보 수정 결과
+message UpdateCustomerResponse {
+  int32 status            = 1;
+  repeated string error   = 2;
+}
+/********************************************************************************
+  거래처 관련 끝
+ ********************************************************************************/
+
+/********************************************************************************
+  거래처 소속 - 베뉴 정보 시작
+ ********************************************************************************/
+service BO_Venue_Service {
+  rpc CreateVenue(CreateVenueRequest) returns (CreateVenueResponse) {}          // 베뉴 정보 입력
+  rpc GetVenue(GetVenueRequest) returns (GetVenueResponse) {} // 베뉴 구역 정보 입력
+  rpc ListVenue(ListVenueRequest) returns (ListVenueResponse) {} // 베뉴 구역 정보 입력
+  rpc UpdateVenue(UpdateVenueRequest) returns (UpdateVenueResponse) {} // 베뉴 구역 정보 입력
+  rpc DeleteVenue(DeleteVenueRequest) returns (DeleteVenueResponse) {} // 베뉴 구역 정보 입력
+}
+
+message Venue {
+  string id          = 1; // 장소코드번호
+  string customerId  = 2; // 거래처코드번호
+  string sportsId    = 3; // 종목코드번호
+  int32  countryId   = 4; // 국가코드번호
+  int32  stateId     = 5; // 주코드번호
+  int32  cityId      = 6; // 도시코드번호
+  string name        = 7; // 장소명
+  string description = 8; // 장소설명
+}
+
+message GetVenueResponse {
+  int32 status          = 1;
+  message Result {
+    Venue venue         = 1;
+  }
+  Result result         = 2;
+  repeated string error = 3;
+}
+
+message GetVenueRequest {
+  string id = 1; // 장소코드번호
+}
+
+message ListVenueResponse {
+  int32 status = 1;
+  int32 totalCount = 2;
+  int32 page = 3;
+  int32 lastPage = 4;
+  message Result {
+    repeated Venue venues = 1;
+  }
+  Result result = 5;
+  repeated string error = 6;
+}
+
+message ListVenueRequest {
+  int32   page          = 1; // 페이지 번호
+  int32   pagesize      = 2; // 페이지 사이즈
+  string  sort          = 3; // 정렬 - field 명
+  string  order         = 4; // 정렬 방식 asc / desc
+  //string  searchMethod  = 5; // 검색조건
+  //string  searchString  = 6; // 검색어
+}
+
+message UpdateVenueResponse {
+  int32 status = 1;
+  repeated string error = 2;
+}
+
+message UpdateVenueRequest {
+  string  id          = 1; // 장소코드번호
+  string  customerId  = 2; // 거래처코드번호
+  string  sportsId    = 3; // 종목코드번호
+  int32   countryId   = 4; // 국가코드번호
+  int32   stateId     = 5; // 주코드번호
+  int32   cityId      = 6; // 도시코드번호
+  string  name        = 7; // 장소명
+  string  description = 8; // 장소설명
+}
+
+message DeleteVenueRequest {
+  string id = 1; // 장소코드번호
+}
+
+message DeleteVenueResponse {
+  int32 status = 1;
+  repeated string error = 2;
+}
+
+message CreateVenueRequest {
+  string  customerId  = 1; // 거래처코드번호
+  string  sportsId    = 2; // 종목코드번호
+  int32   countryId   = 3; // 국가코드번호
+  int32   stateId     = 4; // 주코드번호
+  int32   cityId      = 5; // 도시코드번호
+  string  name        = 6; // 장소명
+  string  description = 7; // 장소설명
+}
+
+message CreateVenueResponse {
+  int32 status = 1;
+  message Result {
+    string id = 1;
+  }
+  repeated string error = 2;
+  Result result = 3;
+}
+/********************************************************************************
+  거래처 소속 - 베뉴 정보 끝
+ ********************************************************************************/
+
+/********************************************************************************
+  customer - venue - sector
+ ********************************************************************************/
+service BO_Sector_Service {
+  rpc CreateSector(CreateSectorRequest) returns (CreateSectorResponse) {}
+  rpc GetSector(GetSectorRequest) returns (GetSectorResponse) {}
+  rpc ListSector(ListSectorRequest) returns (ListSectorResponse) {}
+  rpc UpdateSector(UpdateSectorRequest) returns (UpdateSectorResponse) {}
+  rpc DeleteSector(DeleteSectorRequest) returns (DeleteSectorResponse) {}
+}
+
+message UpdateSectorResponse {
+  int32 status = 1;
+  repeated string error = 2;
+}
+
+message UpdateSectorRequest {
+  string  id          = 1; // 구역코드번호
+  string  customerId  = 2; // 고객코드번호
+  string  venueId     = 3; // 장소코드번호
+  string  name        = 4; // 구역명
+  string  description = 5; // 구역설명
+}
+
+message ListSectorResponse {
+  int32 status = 1;
+  int32 totalCount = 2;
+  int32 page = 3;
+  int32 lastPage = 4;
+  message Result {
+    repeated Sector sectors = 1;
+  }
+  Result result = 5;
+  repeated string error = 6;
+}
+
+message ListSectorRequest {
+  int32   page          = 1; // 페이지 번호
+  int32   pagesize      = 2; // 페이지 사이즈
+  string  sort          = 3; // 정렬 - field 명
+  string  order         = 4; // 정렬 방식 asc / desc
+  //string  searchMethod  = 5; // 검색조건
+  //string  searchString  = 6; // 검색어
+}
+
+message GetSectorResponse {
+  int32 status = 1;
+  message Result {
+    Sector2 sector = 1;
+  }
+  Result result = 2;
+  repeated string error = 3;
+}
+
+message GetSectorRequest {
+  string id = 1; // sector id
+}
+
+message DeleteSectorRequest {
+  string id = 1; // 구역코드번호
+}
+
+message DeleteSectorResponse {
+  int32 status = 1;
+  repeated string error = 2;
+}
+
+message Sector {
+  string  id          = 1; // 구역코드번호
+  string  customerId  = 2; // 고객코드번호
+  string  venueId     = 3; // 장소코드번호
+  string  name        = 4; // 구역명
+  string  description = 5; // 구역설명
+}
+
+message Sector2 {
+  string  id          = 1; // 구역코드번호
+  string  customerId  = 2; // 고객코드번호
+  string  venueId     = 3; // 장소코드번호
+  string  name        = 4; // 구역명
+  string  description = 5; // 구역설명
+  string  sportsId    = 6; // 종목코드번호
+  string  fId         = 7; // 구장코드번호
+}
+
+message CreateSectorRequest {
+  string  customerId  = 1; // 고객코드번호
+  string  venueId     = 2; // 장소코드번호
+  string  name        = 3; // 구역명
+  string  description = 4; // 구역설명
+}
+
+message CreateSectorResponse {
+  int32 status = 1;
+  message Result {
+    string id = 1;
+  }
+  repeated string error = 2;
+  Result result = 3;
+}
+
+/********************************************************************************
+  customer - venue - sector end
+ ********************************************************************************/
+
+/********************************************************************************
+  customer - member
+ ********************************************************************************/
+service BO_Member_Service {
+  rpc CreateMember(CreateMemberRequest) returns (CreateMemberResponse) {}       // 거래처 소속 사용자 정보 입력
+  //rpc GetMember(GetMemberRequest) returns (GetMemberResponse) {} // 거래처 소속 사용자 정보 입력
+  //rpc ListMember(ListMemberRequest) returns (ListMemberResponse) {} // 거래처 소속 사용자 정보 입력
+  //rpc UpdateMember(UpdateMemberRequest) returns (UpdateMemberResponse) {} // 거래처 소속 사용자 정보 입력
+  //rpc DeleteMember(DeleteMemberRequest) returns (DeleteMemberResponse) {} // 거래처 소속 사용자 정보 입력
+}
+
+message CreateMemberRequest {
+  string name = 1;
+  string email = 2;
+  string password = 3;
+  int32 roles = 4;
+}
+
+message CreateMemberResponse {
+  int32 status = 1;
+  repeated string error = 2;
+}
+
+/********************************************************************************
+  customer - member end
+ ********************************************************************************/
+/********************************************************************************
+ 카테고리 관리 시작
+*********************************************************************************/
+service CategoryService {
+  rpc CreateCategory(CreateCategoryReq) returns (CreateCategoryRes) {} // 카테고리 정보 입력
+  rpc CreateSubCategory(CreateSubCategoryReq) returns (CreateCategoryRes) {} // 서브 카테고리 정보 입력
+  rpc ListCategory(ListCategoryReq) returns (ListCategoryRes) {} // 카테고리 정보 목록 조회
+  rpc ListSubCategory(ListSubCategoryReq) returns (ListSubCategoryRes) {} // 서브 카테고리 정보 목록 조회
+  rpc GetCategory(GetCategoryReq) returns (GetCategoryRes) {} // 카테고리 정보 조회
+  rpc GetSubCategory(GetSubCategoryReq) returns (GetSubCategoryRes) {} // 서브 카테고리 정보 조회
+  rpc UpdateCategory(UpdateCategoryReq) returns (UpdateCategoryRes) {} // 카테고리 정보 수정
+  rpc UpdateSubCategory(UpdateSubCategoryReq) returns (UpdateSubCategoryRes) {} // 서브 카테고리 정보 수정
+  rpc DeleteCategory(DeleteCategoryReq) returns (DeleteCategoryRes) {} // 카테고리 정보 삭제
+  rpc DeleteSubCategory(DeleteSubCategoryReq) returns (DeleteSubCategoryRes) {} // 서브 카테고리 정보 삭제
+}
+// 카테고리 목록 요청
+message ListCategoryReq {
+  int32   page    = 1; // 페이지 번호
+  int32   limit   = 2; // 페이지 사이즈
+  string  sort    = 3; // 정렬 - field 명
+  string  order   = 4; // 정렬 방식 asc / desc
+}
+// 카테고리 삭제 요청
+message DeleteCategoryReq {
+  string id = 1; // 카테고리코드번호
+}
+// 카테고리 삭제 응답
+message DeleteCategoryRes {
+  string status   = 1;
+  string message  = 2;
+}
+// 서브 카테고리 삭제 요청
+message DeleteSubCategoryReq {
+  string id = 1; // 카테고리코드번호
+}
+// 서브 카테고리 삭제 응답
+message DeleteSubCategoryRes {
+  string status   = 1;
+  string message  = 2;
+}
+// 서브 카테고리 정보 수정 응답
+message UpdateSubCategoryRes {
+  string status   = 1;
+  string message  = 2;
+}
+// 서브 카테고리 정보 수정
+message UpdateSubCategoryReq {
+  int32   id          = 1; // 카테고리 id
+  int32   categoryId  = 2; // 상위 카테고리 코드
+  string  name        = 3; // 카테고리명
+  string  code        = 4; // 카테고리 코드
+  string  description = 5; // 카테고리설명
+}
+// 카테고리 정보 수정 응답
+message UpdateCategoryRes {
+  string status   = 1;
+  string message  = 2;
+}
+// 카테고리 정보 수정
+message UpdateCategoryReq {
+  int32   id          = 1; // 카테고리 id
+  string  name        = 2; // 카테고리명
+  string  code        = 3; // 카테고리 코드
+  string  description = 4; // 카테고리설명
+}
+// 서브 카테고리 상세 응답
+message GetSubCategoryRes {
+  string status     = 1;
+  string message    = 2;
+  message Data {
+    oneof CategorySubItem {
+      CategorySubItem subCategory = 1;
+    }
+ }
+ Data data = 3;
+}
+// 카테고리 상세 응답
+message GetCategoryRes {
+  string status     = 1;
+  string message    = 2;
+  CategoryItem data = 3;
+}
+// 서브 카테고리 목록 조회
+message ListSubCategoryReq {
+  string categoryId = 1; // 상위 카테고리 코드
+}
+// 서브 카테고리 목록 응답
+message ListSubCategoryRes {
+  string status     = 1;
+  string message    = 2;
+  repeated CategorySubItem category = 3;
+  Paging meta       = 4;
+}
+// 카테고리 내용
+message CategoryItem {
+  int32   id          = 1; // 카테고리코드번호
+  string  name        = 2; // 카테고리명
+  string  code        = 3; // 카테고리 코드
+  string  description = 4; // 카테고리설명
+}
+// 서브 카테고리 내용
+message CategorySubItem {
+  int32   id          = 1; // 카테고리코드번호
+  int32   categoryId  = 2; // 상위 카테고리 코드
+  string  name        = 3; // 카테고리명
+  string  code        = 4; // 카테고리 코드
+  string  description = 5; // 카테고리설명
+}
+// 서브 카테고리 등록
+message CreateSubCategoryReq {
+  int32  categoryId   = 1; // 상위 카테고리 코드
+  string  name        = 2; // 카테고리명
+  string  code        = 3; // 카테고리 코드
+  string  description = 4; // 카테고리설명
+}
+// 카테고리 등록
+message CreateCategoryReq {
+  string  name        = 1; // 카테고리명
+  string  code        = 2; // 카테고리 코드
+  string  description = 3; // 카테고리설명
+}
+// 카테고리 등록 응답
+message CreateCategoryRes {
+  string status   = 1;
+  string message  = 2;
+}
+// 카테고리 목록 응답
+message ListCategoryRes {
+  string status               = 1;
+  string message              = 2;
+  repeated CategoryItem data  = 3;
+  Paging meta                 = 4;
+}
+// 카테고리 상세 요청
+message GetCategoryReq {
+  int32 id = 1; // 카테고리코드번호
+}
+// 서브 카테고리 상세 요청
+message GetSubCategoryReq {
+  int32 id = 1; // 서브 카테고리 코드 번호
+}
+/********************************************************************************
+ 카테고리 관리 끝
+*********************************************************************************/
+/********************************************************************************
+ MWC 용
+*********************************************************************************/
+service  MwcService {
+  rpc ListMwc(google.protobuf.Empty) returns (ListMwcResponse) {}
+  rpc ListMwcPath(ListMwcRequest) returns (ListMwcResponse) {}
+  rpc GetMwc(GetMwcRequest) returns (GetMwcResponse) {}
+  rpc AddHtml(AddHtmlRequest) returns (AddHtmlResponse) {}
+
+}
+
+message ListMwcRequest {
+  string path = 1;
+}
+
+message AddHtmlRequest {
+  string filename = 1;
+}
+
+message AddHtmlResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+}
+
+message GetMwcRequest {
+  int32 index = 1;
+  string filename = 2;
+}
+
+message GetMwcResponse {
+  string status   = 1;
+  string message  = 2;
+  Mwc data        = 3;
+}
+
+message Mwc {
+  int32 index       = 1;
+  string video      = 2;
+  string thumbnail  = 3;
+  string download   = 4;
+  string link       = 5;
+}
+
+message ListMwcResponse {
+  string status     = 1;
+  string message    = 2;
+  repeated Mwc data = 3;
+}
+
+/********************************************************************************
+ app Versioning
+*********************************************************************************/
+service AppVersionService {
+  rpc ListVersion(google.protobuf.Empty) returns (ListVersionResponse) {}
+  rpc GetVersion(google.protobuf.Empty) returns (GetVersionResponse) {}
+  rpc CreateVersion(AppVersionCreateRequest) returns (AppVersionCreateResponse) {}
+  rpc UpdateVersion(AppVersionUpdateRequest) returns (AppVersionUpdateResponse) {}
+  rpc GetAndroidVersion(google.protobuf.Empty) returns (GetVersionResponse) {}
+  rpc GetIosVersion(google.protobuf.Empty) returns (GetVersionResponse) {}
+}
+
+message ListVersionResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+  repeated Data data = 4;
+  message Data {
+    int32 id = 1;
+    string appName = 2;
+    string version = 3;
+    string description = 4;
+    string platform = 5;
+    string createAt = 6;
+  }
+}
+
+message GetVersionResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+  message Data {
+    int32 id = 1;
+    string appName = 2;
+    string version = 3;
+    string description = 4;
+    string platform = 5;
+    string createdAt = 6;
+  }
+  Data data = 4;
+}
+
+message GetVersionRequest {
+  int32 id = 1;
+}
+
+message AppVersionUpdateRequest {
+  int32 id = 1;
+  string appName = 2;
+  string version = 3;
+  string description = 4;
+  string platform = 5;
+  string information = 6;
+}
+
+message AppVersionUpdateResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+}
+
+message AppVersionCreateRequest {
+  string appName = 1;
+  string version = 2;
+  string description = 3;
+  string platform = 4;
+  string information = 5;
+}
+
+message AppVersionCreateResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+}

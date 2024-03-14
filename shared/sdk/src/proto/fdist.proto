@@ -1,0 +1,543 @@
+syntax = "proto3";
+
+package fdist;
+
+import "google/protobuf/empty.proto";
+//import "google/protobuf/timestamp.proto";
+
+service VideoService {
+  rpc TogglePublished(TogglePublishedRequest) returns (TogglePublishedResponse) {} // 비디오 공개 여부 토글
+  rpc DeleteVideo(DeleteVideoRequest) returns (DeleteVideoResponse) {} // 비디오 삭제
+}
+
+message TogglePublishedRequest {
+  string userId = 1;
+  int32 videoId = 2;
+  bool isPublished = 3;
+}
+
+message TogglePublishedResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+  message DATA {
+    bool isPublished = 1;
+  }
+  DATA data = 4;
+}
+
+message DeleteVideoRequest {
+  string userId = 1;
+  int32 videoId = 2;
+}
+
+message DeleteVideoResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+}
+
+service FDistService {
+  rpc GetContent(GetContentRequest) returns (GetContentResponse) {} // 컨텐츠 상세 보기
+  //rpc ListContent(ListContentRequest) returns (ListContentResponse) {} // 컨텐츠 리스트 보기
+  //rpc MainListContent(MainListContentRequest) returns (MainListContentResponse) {} // 메인 리스트 보기
+
+  rpc VideoRecording(VideoRecordingRequest) returns (VideoRecordingResponse) {} // 비디오 녹화
+  rpc GetNodeId(GetNodeIdRequest) returns (GetNodeIdResponse) {} // 노드 아이디 가져오기
+
+  rpc Initialize(google.protobuf.Empty) returns(InitInfoResponse) {} // 초기화
+
+  rpc GetVideos(GetVideoListRequest) returns (GetVideoListResponse) {} // 비디오 리스트 가져오기
+  rpc GetVideoById(GetVideoByIdRequest) returns (GetVideoByIdResponse) {} // 비디오 아이디로 비디오 가져오기
+  rpc GetVideoCategory(GetVideoCategoryRequest) returns (GetVideoCategoryResponse) {} // 비디오 카테고리 가져오기
+  rpc GetVideoRecordType(GetVideoRecordTypeRequest) returns (GetVideoRecordTypeResponse) {} // 비디오 녹화 타입 가져오기
+
+  rpc GetCategory(google.protobuf.Empty) returns (GetCategoryResponse) {} // 카테고리 가져오기
+  rpc GetCategorySub(google.protobuf.Empty) returns (GetCategorySubResponse) {} // 카테고리 서브 가져오기
+  rpc GetRecordType(google.protobuf.Empty) returns (GetRecordTypeResponse) {} // 녹화 타입 가져오기
+
+  rpc ToggleLike(ToggleLikeRequest) returns (ToggleLikeResponse) {} // 좋아요 토글
+  rpc GetLikeCheck(GetLikeCheckRequest) returns (GetLikeCheckResponse) {} // 좋아요 체크
+  rpc ReportVideo(ReportVideoRequest) returns (ReportVideoResponse) {} // 비디오 신고
+
+  rpc MyVideoList(MyVideoListRequest) returns (MyVideoListResponse) {} // 내 비디오 리스트 가져오기
+  rpc MyVideoExists(MyVideoExistsRequest) returns (MyVideoExistsResponse) {} // 내 비디오 존재 여부 확인
+}
+
+message MyVideoExistsRequest {
+  string userEmail = 1;
+}
+
+message MyVideoExistsResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+}
+
+message MyVideoListResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+  message DATA {
+    int32 id = 1;
+    string email = 2;
+    string title = 3;
+    string subTitle = 4;
+    string description = 5;
+    string ownerName = 6;
+    string ownerNickName = 7;
+    string ownerChannelName = 8;
+    string ownerProfileIconUrl = 9;
+    int32 viewCount = 10;
+    int32 reportCount = 11;
+    int32 likesCount = 12;
+    string duration = 13;
+    string category = 14;
+    string categorySub = 15;
+    string categorySubCode = 16;
+    string recordType = 17;
+    repeated string contentUrlList = 18;
+    repeated string poseIndicatorList = 19;
+    string nodeId = 20;
+    string created_at = 21;
+    string updated_at = 22;
+    string thumbnailUrl = 23;
+    string isPublished = 24;
+  }
+  repeated DATA data = 4;
+  message Meta {
+    int32 page = 1;
+    int32 limit = 2;
+    int32 totalCount = 3;
+    int32 lastPage = 4;
+  }
+  Meta meta = 5;
+}
+
+message MyVideoListRequest {
+  string userEmail = 1;
+  int32 page = 2;
+  int32 limit = 3;
+  string sort = 4;
+  string order = 5;
+}
+
+message GetLikeCheckResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+  message DATA {
+    bool result = 1;
+  }
+  repeated DATA data = 4;
+}
+
+message GetLikeCheckRequest {
+  int32 userId = 1;
+  int32 videoId = 2;
+}
+
+message GetVideoRecordTypeRequest {
+  string type = 1;
+  int32 page = 2;
+  int32 limit = 3;
+}
+
+message GetVideoRecordTypeResponse {
+  string result = 1;
+  int32 status = 2;
+  string message                      = 3;
+  message DATA {
+    int32 id = 1;
+    string email = 2;
+    string title = 3;
+    string subTitle = 4;
+    string description = 5;
+    string ownerName = 6;
+    string ownerNickName = 7;
+    string ownerChannelName = 8;
+    string ownerProfileIconUrl = 9;
+    int32 viewCount = 10;
+    int32 reportCount = 11;
+    int32 likesCount = 12;
+    string duration = 13;
+    string category = 14;
+    string categorySub                = 15;
+    string categorySubCode            = 16;
+    string recordType                 = 17;
+    repeated string contentUrlList    = 18;
+    repeated string poseIndicatorList = 19;
+    string nodeId                     = 20;
+    string created_at                 = 21;
+    string updated_at                 = 22;
+    string thumbnailUrl               = 23;
+  }
+  repeated DATA data                        = 4;
+  message Meta {
+    int32 total                       = 1;
+    int32 page                        = 2;
+    int32 last_page                   = 3;
+  }
+  Meta meta                                 = 5;
+}
+
+message GetRecordTypeResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+  message DATA {
+    int32 index = 1;
+    string recordType = 2;
+  }
+  repeated DATA data = 4;
+}
+
+message GetVideoCategoryRequest {
+  string caty = 1;
+}
+
+message GetVideoCategoryResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+  message DATA {
+    int32 index = 1;
+    string category = 2;
+  }
+  repeated DATA data = 4;
+}
+
+message ReportVideoRequest {
+  int32 userId = 1;
+  int32 videoId = 2;
+  int32 reportType = 3;
+  string report = 4;
+}
+
+message ReportVideoResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+  message DATA {
+    oneof data {
+      bool result = 1;
+      string error = 2;
+    }
+  }
+  repeated DATA data = 4;
+}
+
+message ToggleLikeRequest {
+  int32 userId = 1;
+  int32 videoId = 2;
+  bool isLike = 3;
+}
+
+message ToggleLikeResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+  message DATA {
+    oneof data {
+      bool result = 1;
+      int32 likeCount = 2;
+      string error = 3;
+    }
+  }
+  repeated DATA data = 4;
+}
+
+message GetCategorySubResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+  message DATA {
+    int32 index = 1;
+    string categorySubName = 2;
+  }
+  repeated DATA data = 4;
+}
+
+message GetVideoListRequest {
+  string cat = 1;
+  int32 page = 2;
+  int32 limit = 3;
+}
+message GetVideoByIdRequest {
+  int32 id = 1;
+}
+
+message IdVideo {
+  int32 id = 1;
+  string email = 2;
+  string title = 3;
+  string subTitle = 4;
+  string description = 5;
+  string ownerName = 6;
+  string ownerNickName = 7;
+  string ownerChannelName = 8;
+  string ownerProfileIconUrl = 9;
+  int32 viewCount = 10;
+  int32 reportCount = 11;
+  int32 likesCount = 12;
+  string duration = 13;
+  string category = 14;
+  string categorySub  = 15;
+  string categorySubCode = 16;
+  string recordType = 17;
+  repeated string contentUrlList = 18;
+  repeated string poseIndicatorList = 19;
+  string nodeId = 20;
+  string created_at = 21;
+  string updated_at = 22;
+  string thumbnailUrl = 23;
+  string isPublished = 24;
+}
+
+message Videos {
+  int32 id = 1;
+  string email = 2;
+  string title = 3;
+  string subTitle = 4;
+  string description = 5;
+  string ownerName = 6;
+  string ownerNickName = 7;
+  string ownerChannelName = 8;
+  string ownerProfileIconUrl = 9;
+  int32 viewCount = 10;
+  int32 reportCount = 11;
+  int32 likesCount = 12;
+  string duration = 13;
+  string category = 14;
+  string categorySub  = 15;
+  string categorySubCode = 16;
+  string recordType = 17;
+  repeated string contentUrlList = 18;
+  repeated string poseIndicatorList = 19;
+  string nodeId = 20;
+  string created_at = 21;
+  string updated_at = 22;
+  string thumbnailUrl = 23;
+}
+
+message GetVideoByIdResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+  IdVideo data = 4;
+}
+
+message Meta {
+  int32 total = 1;
+  int32 page = 2;
+  int32 last_page = 3;
+}
+
+message GetVideoListResponse {
+  string result       = 1;
+  int32 status        = 2;
+  string message      = 3;
+  repeated Videos data = 4;
+  Meta meta = 5;
+}
+
+message InitInfoResponse {
+  string nodeId = 1;
+}
+
+message VideoRecordingRequest {
+  string nodeId = 1;
+  string userId = 2;
+  string command = 3;
+}
+
+message VideoRecordingResponse {
+  string result = 1;
+}
+
+message GetNodeIdRequest {
+  string userId = 1;
+}
+
+message GetNodeIdResponse {
+  string nodeId = 1;
+}
+
+message GetContentRequest {
+  string id = 1;
+}
+
+message GetContentResponse {
+  ContentItem contentItem = 1;
+}
+
+message Category {
+  int32   id      = 1;
+  string  title   = 2;
+  string  iconUrl = 3;
+}
+
+message GetCategoryResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+  message DATA {
+    int32 index = 1;
+    string category = 2;
+  }
+  repeated DATA data = 4;
+}
+
+message ContentItem {
+  string id = 1;
+  string title = 2;
+  string subtitle = 3;
+  string description = 4;
+  string iconUrl = 5;
+  string thumbnailUrl = 6;
+  string displayedDuration = 7;
+  string streamingUrl = 8;
+}
+
+service MwcService {
+  rpc AddMwc(AddMwcRequest) returns (AddMwcResponse) {} // MWC 추가
+  rpc ExistsMwc(ExistsMwcRequest) returns (ExistsMwcResponse) {} // MWC 존재 여부 확인
+  rpc UpdateVideoMetaInfo(UpdateVideoMetaInfoRequest) returns (UpdateVideoMetaInfoResponse) {} // 비디오 메타 정보 업데이트
+  rpc ExistsVideo(ExistsVideoRequest) returns (ExistsVideoResponse) {} // 비디오 존재 여부 확인
+  rpc AddHtml(AddHtmlRequest) returns (AddHtmlResponse) {} // HTML 추가
+}
+message AddHtmlRequest {
+  string fileName = 1;
+}
+
+message AddHtmlResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+}
+
+message ExistsVideoRequest {
+  string userEmail = 1;
+}
+
+message ExistsVideoResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+}
+
+message UpdateVideoMetaInfoRequest {
+  string userEmail = 1;
+  int32 videoId = 2;
+  string title = 3;
+  string subTitle = 4;
+  string description = 5;
+}
+
+message UpdateVideoMetaInfoResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+  message DATA {
+    int32 id = 1;
+    string email = 2;
+    string title = 3;
+    string subTitle = 4;
+    string description = 5;
+    string ownerName = 6;
+    string ownerNickName = 7;
+    string ownerChannelName = 8;
+    string ownerProfileIconUrl = 9;
+    int32 viewCount = 10;
+    int32 reportCount = 11;
+    int32 likesCount = 12;
+    string duration = 13;
+    string category = 14;
+    string categorySub  = 15;
+    string categorySubCode = 16;
+    string recordType = 17;
+    repeated string contentUrlList = 18;
+    repeated string poseIndicatorList = 19;
+    string nodeId = 20;
+    string created_at = 21;
+    string updated_at = 22;
+    string thumbnailUrl = 23;
+  }
+  DATA data = 4;
+}
+
+message ExistsMwcResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+  message DATA {
+    int32 id = 1;
+    string email = 2;
+    string title = 3;
+    string subTitle = 4;
+    string description = 5;
+    string ownerName = 6;
+    string ownerNickName = 7;
+    string ownerChannelName = 8;
+    string ownerProfileIconUrl = 9;
+    int32 viewCount = 10;
+    int32 reportCount = 11;
+    int32 likesCount = 12;
+    string duration = 13;
+    string category = 14;
+    string categorySub  = 15;
+    string categorySubCode = 16;
+    string recordType = 17;
+    repeated string contentUrlList = 18;
+    repeated string poseIndicatorList = 19;
+    string nodeId = 20;
+    string created_at = 21;
+    string updated_at = 22;
+    string thumbnailUrl = 23;
+  }
+  DATA data = 4;
+}
+
+message ExistsMwcRequest {
+  string userEmail = 1;
+  string fileName = 2;
+}
+
+message AddMwcRequest {
+  string userId   = 1;
+  string fileName = 2;
+}
+
+message AddMwcResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+  message DATA {
+    int32 id = 1;
+    string email = 2;
+    string title = 3;
+    string subTitle = 4;
+    string description = 5;
+    string ownerName = 6;
+    string ownerNickName = 7;
+    string ownerChannelName = 8;
+    string ownerProfileIconUrl = 9;
+    int32 viewCount = 10;
+    int32 reportCount = 11;
+    int32 likesCount = 12;
+    string duration = 13;
+    string category = 14;
+    string categorySub  = 15;
+    string categorySubCode = 16;
+    string recordType = 17;
+    repeated string contentUrlList = 18;
+    repeated string poseIndicatorList = 19;
+    string nodeId = 20;
+    string created_at = 21;
+    string updated_at = 22;
+    string thumbnailUrl = 23;
+  }
+  DATA data = 4;
+}
+
+

@@ -1,0 +1,395 @@
+syntax = "proto3";
+
+//import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+package member;
+
+service MemberService {
+  rpc SignUp(SignUpRequest) returns (SignUpResponse) {} // 멤버 등록
+  rpc Update(UpdateRequest) returns (UpdateResponse) {} // 멤버 정보 업데이트
+  // rpc Delete(DeleteRequest) returns (DeleteResponse) {} // 멤버 탈퇴 / 삭제 등 백오피스 기능
+  rpc SignIn(SignInRequest) returns (SignInResponse) {} // 멤버 로그인
+  rpc Validate(ValidateRequest) returns (ValidateResponse) {} // 로그인 유지
+  rpc GetUser(GetUserRequest) returns (GetUserResponse) {} // 멤버 정보 조회
+
+  rpc UpdateRole(UpdateRoleRequest) returns (UpdateRoleResponse) {} // 멤버 권한 업데이트 //관리자용
+  rpc UpdateState(UpdateStateRequest) returns (UpdateStateResponse) {}
+
+  rpc LeaveMember(LeaveMemberRequest) returns (LeaveMemberResponse) {} // 회원 탈퇴
+
+  rpc VerifyEmail(VerifyEmailRequest) returns (VerifyEmailResponse) {} // 이메일 인증
+
+  rpc CheckEmailDuplication(CheckEmailDuplicationRequest) returns (CheckEmailDuplicationResponse) {} // 이메일 중복 확인
+  rpc CheckNicknameDuplication(CheckNicknameDuplicationRequest) returns (CheckNicknameDuplicationResponse) {} // 닉네임 중복 확인
+
+  rpc UpdatePassword(UpdatePasswordRequest) returns (UpdatePasswordResponse) {} // 비밀번호 변경
+  rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse) {} // 비밀번호 초기화
+  rpc EmailVerificationCode(EmailVerificationCodeRequest) returns (EmailVerificationCodeResponse) {} // 이메일 인증 코드 전송
+
+  rpc FindEmail(FindEmailRequest) returns (FindEmailResponse) {} // 이메일 찾기
+  rpc FindPassword(FindPasswordRequest) returns (FindPasswordResponse) {} // 비밀번호 찾기
+
+  rpc UpdatePushReceive(UpdatePushReceiveRequest) returns (UpdatePushReceiveResponse) {} // 푸시 수신 여부 변경
+  rpc UpdateEmailReceive(UpdateEmailReceiveRequest) returns (UpdateEmailReceiveResponse) {} // 이메일 수신 여부 변경
+  rpc UpdateNickname(UpdateNicknameRequest) returns (UpdateNicknameResponse) {} // 닉네임 변경
+}
+message UpdateEmailReceiveRequest {
+  int32 id = 1;
+  bool emailreceive = 2;
+}
+
+message UpdateEmailReceiveResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+  message DATA {
+    oneof data{
+      bool result = 1;
+      string error = 2;
+    }
+  }
+  repeated DATA data = 4;
+}
+
+message UpdatePushReceiveRequest {
+  int32 id = 1;
+  bool pushreceive = 2;
+}
+
+message UpdatePushReceiveResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+  message DATA {
+    oneof data{
+      bool result = 1;
+      string error = 2;
+    }
+  }
+  repeated DATA data = 4;
+}
+
+message UpdateNicknameRequest {
+  int32 id = 1;
+  string nickname = 2;
+}
+
+message UpdateNicknameResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+  message DATA {
+    oneof data{
+      bool result = 1;
+      string error = 2;
+    }
+  }
+  repeated DATA data = 4;
+}
+
+message FindEmailRequest {
+  string email = 1;
+}
+
+message FindEmailResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+  message DATA {
+    oneof data{
+      string email = 1;
+      string error = 2;
+    }
+  }
+  repeated DATA data = 4;
+}
+
+message FindPasswordRequest {
+  string email = 1;
+  string code = 2;
+}
+
+message FindPasswordResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+  message DATA {
+    oneof data{
+      string token = 1;
+      string error = 2;
+    }
+  }
+  repeated DATA data = 4;
+}
+
+message EmailVerificationCodeRequest {
+  string email = 1;
+}
+
+message EmailVerificationCodeResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+  message DATA {
+    oneof data{
+      string code = 1;
+      string error = 2;
+    }
+  }
+  repeated DATA data = 4;
+}
+
+message ResetPasswordResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+  message DATA {
+    oneof data{
+      string token = 1;
+      string error = 2;
+    }
+  }
+  repeated DATA data = 4;
+}
+
+message ResetPasswordRequest {
+  string email    = 1;
+  string password = 2;
+}
+
+message UpdatePasswordRequest {
+  string token = 1;
+  string password = 2;
+}
+
+message UpdatePasswordResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+  message DATA {
+    oneof data{
+      bool result = 1;
+      string error = 2;
+    }
+  }
+  repeated string data = 4;
+}
+
+message CheckNicknameDuplicationRequest {
+  string nickname = 1;
+}
+
+message CheckNicknameDuplicationResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+  message DATA {
+    oneof data{
+      bool result = 1;
+      string error = 2;
+    }
+  }
+  repeated DATA data = 4;
+}
+
+message CheckEmailDuplicationRequest {
+  string email = 1;
+}
+
+message CheckEmailDuplicationResponse {
+  string result = 1;
+  int32 status = 2;
+  string message = 3;
+  message DATA {
+    oneof data{
+      bool result = 1;
+      string error = 2;
+    }
+  }
+  repeated DATA data = 4;
+}
+
+message VerifyEmailRequest {
+  string token = 1;
+}
+
+message VerifyEmailResponse {
+  string result         = 1;
+  int32 status          = 2;
+  string message        = 3;
+  message DATA {
+    oneof data{
+      bool result = 1;
+      string error = 2;
+    }
+  }
+  repeated DATA data  = 4;
+}
+
+message LeaveMemberRequest {
+  int32 id = 1;
+}
+
+message LeaveMemberResponse {
+  string result         = 1;
+  int32 status          = 2;
+  string message        = 3;
+}
+
+message User {
+  int32 id                            = 1;
+  string email                        = 2;
+  string name                         = 3;
+  string role                         = 4;
+  string state                        = 5;
+  bool isVerifiedEmail                = 6;
+  google.protobuf.Timestamp createdAt = 7;
+  google.protobuf.Timestamp updatedAt = 8;
+  google.protobuf.Timestamp deletedAt = 9;
+}
+
+message GetUserResult {
+  oneof data {
+    int32 id = 1;
+    string email = 2;
+    string name = 3;
+    string nickname = 4;
+    string usertype = 5;
+    string state = 6;
+    bool isVerifiedEmail = 7;
+    string createdAt = 8;
+    string updatedAt = 9;
+    string error = 10;
+  }
+}
+
+message GetUserResponse {
+  string result       = 1;
+  int32 status        = 2;
+  string message      = 3;
+  repeated GetUserResult data  = 4;
+}
+
+message GetUserRequest {
+  int32 id = 1;
+}
+
+message UpdateStateRequest {
+  string status = 1;
+  string message = 2;
+}
+
+message UpdateStateResponse {
+  string result       = 1;
+  int32 status        = 2;
+  string message      = 3;
+  repeated User data  = 4;
+}
+
+message UpdateRoleRequest {
+  string email  = 1;
+  string role   = 2;
+}
+
+message UpdateRoleResponse {
+  string result       = 1;
+  int32 status        = 2;
+  string message      = 3;
+  repeated User data  = 4;
+}
+
+message SignUpRequest {
+  string name       = 1;
+  string nickname   = 2;
+  string email      = 3;
+  string password   = 4;
+  bool pushreceive  = 5;
+  bool emailreceive = 6;
+  string usertype   = 7;
+}
+
+message SignUpResult {
+  int32 id          = 1;
+  string name       = 2;
+  string nickname   = 3;
+  string email      = 4;
+  string usertype   = 5;
+  string state      = 6;
+  bool emailreceive = 7;
+  bool pushreceive  = 8;
+  string createdAt  = 9;
+}
+
+message SignUpResponse {
+  string result     = 1;
+  int32 status      = 2;
+  string message    = 3;
+  repeated SignUpResult data = 4;
+}
+
+message UpdateRequest {
+  int32 id = 1;
+  string name = 2;
+  string nickname = 3;
+  string pushreceive = 4;
+  string emailreceive = 5;
+}
+
+message UpdateResult {
+  int32 id          = 1;
+  string email      = 2;
+}
+
+message UpdateResponse {
+  string result               = 1;
+  int32 status                = 2;
+  string message              = 3;
+  repeated UpdateResult data  = 4;
+}
+
+message SignInRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message SignInResult {
+  oneof data {
+    int32 id          = 1;
+    string email      = 2;
+    string name       = 3;
+    string nickname   = 4;
+    bool pushreceive  = 5;
+    bool emailreceive = 6;
+    string token      = 7;
+    string error      = 8;
+  }
+}
+
+message SignInResponse {
+  string result               = 1;
+  int32 status                = 2;
+  string message              = 3;
+  repeated SignInResult data  = 4;
+}
+
+message ValidateRequest {
+  string token = 1;
+}
+
+message ValidateResult {
+  oneof data {
+    int32 id     = 1;
+    string email = 2;
+    string error = 3;
+  }
+}
+
+message ValidateResponse {
+  string result                 = 1;
+  int32 status                  = 2;
+  string message                = 3;
+  repeated ValidateResult data  = 4;
+}
+
+
