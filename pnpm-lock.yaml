@@ -122,7 +122,7 @@ importers:
         version: 10.9.1(@types/node@20.10.4)(typescript@5.3.3)
       ts-proto:
         specifier: ^1.165.1
-        version: 1.165.1
+        version: 1.169.1
       tsconfig-paths:
         specifier: ^4.2.0
         version: 4.2.0
@@ -5418,16 +5418,6 @@ packages:
     dependencies:
       long: 5.2.3
       protobufjs: 7.2.6
-    dev: true
-
-  /ts-proto@1.165.1:
-    resolution: {integrity: sha512-tn/sj9i31Q4d3/HtN2PFMU/OQwrBYP2cfhYo75cPpO2ks7unFxf1/oMdIt/2woCcOwRclxruGCrs7Ljdl9BPkw==}
-    hasBin: true
-    dependencies:
-      case-anything: 2.1.13
-      protobufjs: 7.2.6
-      ts-poet: 6.7.0
-      ts-proto-descriptors: 1.15.0
     dev: true
 
   /ts-proto@1.169.1:

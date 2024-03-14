@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -22,6 +23,8 @@ async function bootstrap() {
   app.enableCors();
   app.set('trust proxy', true);
 
-  await app.listen(process.env.PORT || 3000);
+  await app.listen(ConfigService.get('PORT') || 3000);
 }
-bootstrap();
+bootstrap().then(() => {
+  console.log('Server is running on port 3000');
+});
