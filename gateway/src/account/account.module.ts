@@ -1,7 +1,7 @@
 import { Global, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { MemberController } from './account.controller';
+import { AccountController } from './account.controller';
 
 import { MEMBER_PACKAGE_NAME, MEMBER_SERVICE_NAME } from '@4dist/sdk';
 
@@ -23,6 +23,6 @@ import { MEMBER_PACKAGE_NAME, MEMBER_SERVICE_NAME } from '@4dist/sdk';
       },
     ]),
   ],
-  controllers: [MemberController],
+  controllers: [AccountController],
 })
 export class AccountModule {}

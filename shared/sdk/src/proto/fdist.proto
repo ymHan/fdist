@@ -404,16 +404,6 @@ service MwcService {
   rpc ExistsMwc(ExistsMwcRequest) returns (ExistsMwcResponse) {} // MWC 존재 여부 확인
   rpc UpdateVideoMetaInfo(UpdateVideoMetaInfoRequest) returns (UpdateVideoMetaInfoResponse) {} // 비디오 메타 정보 업데이트
   rpc ExistsVideo(ExistsVideoRequest) returns (ExistsVideoResponse) {} // 비디오 존재 여부 확인
-  rpc AddHtml(AddHtmlRequest) returns (AddHtmlResponse) {} // HTML 추가
-}
-message AddHtmlRequest {
-  string fileName = 1;
-}
-
-message AddHtmlResponse {
-  string result = 1;
-  int32 status = 2;
-  string message = 3;
 }
 
 message ExistsVideoRequest {

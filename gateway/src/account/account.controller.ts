@@ -3,7 +3,11 @@ import {
   MemberServiceClient,
   SignInRequest,
   SignInResponse, SignUpRequest, SignUpResponse,
-  AccountRoles,
+  AccountRoles, ValidateResponse, GetUserRequest, GetUserResponse,
+  LeaveMemberRequest, LeaveMemberResponse, CheckEmailDuplicationResponse, CheckNicknameDuplicationResponse,
+  VerifyEmailResponse, UpdatePasswordRequest, UpdateEmailReceiveResponse, FindEmailRequest, FindEmailResponse, FindPasswordRequest, FindPasswordResponse,
+  ResetPasswordRequest, ResetPasswordResponse, UpdateNicknameRequest, UpdateNicknameResponse,
+  UpdatePushReceiveRequest, UpdatePushReceiveResponse, UpdateEmailReceiveRequest, UpdatePasswordResponse
 } from '@4dist/sdk';
 import { Body, Controller, Inject, Post, Get, Param, Query, Delete, Patch, Req, OnModuleInit, UnauthorizedException } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
@@ -13,7 +17,7 @@ import { ApiTags, ApiParam, ApiOperation, ApiBody, ApiQuery, ApiBearerAuth, ApiC
 
 @ApiTags('Account')
 @Controller('account')
-export class MemberController implements OnModuleInit {
+export class AccountController implements OnModuleInit {
   @Inject(MEMBER_SERVICE_NAME)
   private readonly client: ClientGrpc;
   private service: MemberServiceClient;
@@ -118,7 +122,7 @@ export class MemberController implements OnModuleInit {
     },
   })
   public signIn(@Body() body: SignInRequest): Observable<SignInResponse> {
-    return this.svc.signIn(body);
+    return this.service.signIn(body);
   }
 
   @Post('validate')
@@ -133,7 +137,7 @@ export class MemberController implements OnModuleInit {
 
     const token: string = authorization.replace(/bearer/gim, '').trim();
 
-    return this.svc.validate({ token });
+    return this.service.validate({ token });
   }
 
   @ApiOperation({ summary: '내 정보 조회' })
@@ -146,7 +150,7 @@ export class MemberController implements OnModuleInit {
       type: 'number',
     })
     public getUser(@Param() params: GetUserRequest): Observable<GetUserResponse> {
-      return this.svc.getUser(params);
+      return this.service.getUser(params);
     }
 
     @Delete('/user/:id')
@@ -159,7 +163,7 @@ export class MemberController implements OnModuleInit {
       type: 'number',
     })
     public leaveMember(@Param() params: LeaveMemberRequest): Observable<LeaveMemberResponse> {
-      return this.svc.leaveMember(params);
+      return this.service.leaveMember(params);
     }
 
     /*
@@ -167,7 +171,7 @@ export class MemberController implements OnModuleInit {
     * */
     @Get('/user/email/check')
     public CheckEmailDuplication(@Query('email') email: string): Observable<CheckEmailDuplicationResponse> {
-      return this.svc.checkEmailDuplication({ email });
+      return this.service.checkEmailDuplication({ email });
     }
 
     @Get('/user/nickname/check')
@@ -179,7 +183,7 @@ export class MemberController implements OnModuleInit {
       type: 'string',
     })
     public checkNicknameDuplication(@Query('nickname') nickname: string): Observable<CheckNicknameDuplicationResponse> {
-      return this.svc.checkNicknameDuplication({ nickname });
+      return this.service.checkNicknameDuplication({ nickname });
     }
 
     @Get('/email')
@@ -191,7 +195,7 @@ export class MemberController implements OnModuleInit {
       type: 'string',
     })
     public verifyEmail(@Query('token') token: string): Observable<VerifyEmailResponse> {
-      return this.svc.verifyEmail({ token });
+      return this.service.verifyEmail({ token });
     }
 
     @Patch('/user/password/update')
@@ -213,7 +217,7 @@ export class MemberController implements OnModuleInit {
       },
     })
     public updatePassword(@Body() body: UpdatePasswordRequest): Observable<UpdatePasswordResponse> {
-      return this.svc.updatePassword(body);
+      return this.service.updatePassword(body);
     }
 
     @Post('/user/password/email')
@@ -231,7 +235,7 @@ export class MemberController implements OnModuleInit {
       },
     })
     public findEmail(@Body() body: FindEmailRequest): Observable<FindEmailResponse> {
-      return this.svc.findEmail(body);
+      return this.service.findEmail(body);
     }
 
     @Post('/user/password/reset')
@@ -253,7 +257,7 @@ export class MemberController implements OnModuleInit {
       },
     })
     public FindPassword(@Body() body: FindPasswordRequest): Observable<FindPasswordResponse> {
-      return this.svc.findEmail(body);
+      return this.service.findEmail(body);
     }
 
     @Post('/user/password/update')
@@ -275,7 +279,7 @@ export class MemberController implements OnModuleInit {
       },
     })
     public resetPassword(@Body() body: ResetPasswordRequest): Observable<ResetPasswordResponse> {
-      return this.svc.resetPassword(body);
+      return this.service.resetPassword(body);
     }
 
     @Patch('/user/:id/nickname')
@@ -300,7 +304,7 @@ export class MemberController implements OnModuleInit {
     })
     public updateNickname(@Param('id') id: number, @Body('nickname') nickname: string): Observable<UpdateNicknameResponse> {
       const payload: UpdateNicknameRequest = { id, nickname };
-      return this.svc.updateNickname(payload);
+      return this.service.updateNickname(payload);
     }
 
     @Patch('/user/:id/pushreceive')
@@ -328,7 +332,7 @@ export class MemberController implements OnModuleInit {
       @Body('pushreceive') pushreceive: boolean,
     ): Observable<UpdatePushReceiveResponse> {
       const payload: UpdatePushReceiveRequest = { id, pushreceive };
-      return this.svc.updatePushReceive(payload);
+      return this.service.updatePushReceive(payload);
     }
 
     @Patch('/user/:id/emailreceive')
@@ -356,6 +360,6 @@ export class MemberController implements OnModuleInit {
       @Body('emailreceive') emailreceive: boolean,
     ): Observable<UpdateEmailReceiveResponse> {
       const payload: UpdateEmailReceiveRequest = { id, emailreceive };
-      return this.svc.updateEmailReceive(payload);
+      return this.service.updateEmailReceive(payload);
     }
 }

@@ -1,30 +1,51 @@
+import { INestApplication, Logger, VersioningType } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { ConfigService } from '@nestjs/config';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { Version } from './common';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     rawBody: true,
+    cors: true,
   });
+  const config: ConfigService = app.get(ConfigService);
+  const logger: Logger = new Logger();
+  const port: number = config.get('PORT');
 
-  const config = new DocumentBuilder()
+  configure(app);
+
+  const swaggerConfig = new DocumentBuilder()
     .addBearerAuth()
     .setTitle('4Dist API')
     .setDescription('The 4Dist API description')
     .setVersion('1.0')
     .build();
 
-  const document = SwaggerModule.createDocument(app, config);
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
 
-  SwaggerModule.setup('swagger', app, document);
+  SwaggerModule.setup('api', app, document);
 
-  app.enableCors();
-  app.set('trust proxy', true);
+  app.set('trust proxy', 1);
 
-  await app.listen(ConfigService.get('PORT') || 3000);
+  await app.listen(port || 3000, () => {
+    logger.log(`[NOD] ${process.version}`);
+    logger.log(`[ENV] ${process.env.NODE_ENV}`);
+    logger.log(`[DKR] ${(!!process.env.IS_DOCKER)}`);
+    logger.log(`[URL] http://localhost:${port}`);
+  });
 }
+
+const configure = (app: INestApplication) => {
+  app.setGlobalPrefix('api');
+  app.enableVersioning({
+    type: VersioningType.URI,
+    defaultVersion: Version.One,
+  })
+}
+
 bootstrap().then(() => {
-  console.log('Server is running on port 3000');
+  console.log(`Server is running on port ${process.env.PORT || 3000}`);
 });

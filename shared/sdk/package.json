@@ -10,12 +10,11 @@
   ],
   "scripts": {
     "clean": "rimraf dist",
-    "build": "tsc --build",
-    "build:all": "ts-node tools/proto-gen.ts",
-    "dev": "watch 'pnpm run build' ./src",
+    "build": "ts-node tools/proto-gen.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
-    "ts-proto": "^1.169.1"
+    "ts-proto": "^1.169.1",
+    "fast-glob": "^3.3.2"
   }
 }

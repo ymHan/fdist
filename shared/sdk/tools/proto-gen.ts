@@ -1,5 +1,4 @@
 import { exec } from 'child_process';
-import { getFips } from 'crypto';
 import * as fg from 'fast-glob';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -55,6 +54,6 @@ const exportProtobufFiles = (): void => {
 cmd(`protoc ${PLUGIN} --ts_proto_out=${PB_PATH} ${SDK_PROTO} ${NESTJS} ${SUFFIX}`).on('close', () => {
   exportProtobufFiles();
   cmd(`prettier --write src/index.ts && tsc --build`).on('close', () => {
-    cmd('npx copyfile src/proto/* dist/proto');
+    cmd('mkdir -p dist/proto && cp src/proto/* dist/proto');
   });
 });

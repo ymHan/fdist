@@ -15,6 +15,10 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "composite": false,
-    "typeRoots": ["@types"]
+    "typeRoots": ["@types"],
+    "paths": {
+      "@app/common": ["libs/common/src"],
+      "@app/common/*": ["libs/common/src/*"]
+    }
   }
 }
